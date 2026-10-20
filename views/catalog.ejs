@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>요구사항 추적표 · The Family</title><link rel="stylesheet" href="/public/css/app.css"></head>
+<body>
+<header class="topbar" style="position:static">
+  <a class="brand" href="/dashboard" style="padding:0;color:var(--ink);text-decoration:none"><div class="brand-mark">F</div><div class="brand-name" style="color:var(--ink)">The Family<small>요구사항 추적표</small></div></a>
+  <div class="spacer"></div><a class="btn" href="/api-docs">Swagger UI</a><a class="btn primary" href="/dashboard">시스템 열기</a>
+</header>
+<main class="content">
+  <div class="page-head"><div><h1>요구사항 ↔ API 추적표</h1><p>전체 REST API <b><%= registry.length %></b>개 · 각 API 의 Parameter / Body / Response 예시는 Swagger UI 에서 확인·실행할 수 있습니다.</p></div></div>
+  <% groups.forEach(function (g) { %>
+    <div class="card mt">
+      <div class="card-h"><h3><%= g[0] %></h3></div>
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th style="width:90px">요구사항</th><th style="width:70px">API 수</th><th>API</th></tr></thead>
+        <tbody>
+        <% g[1].forEach(function (r) { var list = byReq[r] || []; %>
+          <tr><td><b><%= r %></b></td><td><%= list.length %></td>
+          <td><% list.forEach(function (e) { %><span class="tag" title="<%= e.summary %>"><%= e.method %> <%= e.path %></span><% }) %></td></tr>
+        <% }) %>
+        </tbody>
+      </table></div>
+    </div>
+  <% }) %>
+  <% tags.forEach(function (tag) { %>
+    <div class="card mt">
+      <div class="card-h"><h3><%= tag %></h3></div>
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th style="width:84px">ID</th><th style="width:76px">Method</th><th>Path</th><th>설명</th><th>요구사항</th><th>권한</th><th>구현 위치</th></tr></thead>
+        <tbody>
+        <% registry.filter(function (e) { return e.tag === tag; }).forEach(function (e) { %>
+          <tr><td><%= e.id %></td><td><b><%= e.method %></b></td><td><code><%= e.path %></code></td><td><%= e.summary %></td>
+            <td><%= (e.reqs || []).join(', ') %></td><td><%= e.auth === false ? '공개' : (e.perm ? [].concat(e.perm).join(' | ') : '로그인') %></td><td><code><%= e.location %></code></td></tr>
+        <% }) %>
+        </tbody>
+      </table></div>
+    </div>
+  <% }) %>
+</main>
+</body>
+</html>

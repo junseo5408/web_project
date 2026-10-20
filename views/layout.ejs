@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= def.title %> · The Family</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237c1d2e'/%3E%3Ctext x='16' y='22' font-size='17' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/public/css/app.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="/dashboard" style="text-decoration:none">
+      <div class="brand-mark">F</div>
+      <div class="brand-name">The Family<small>통합 운영 시스템</small></div>
+    </a>
+    <nav class="nav" aria-label="주 메뉴">
+      <% nav.forEach(function (g) { %>
+        <div class="nav-group">
+          <div class="nav-label"><%= g.group %></div>
+          <% g.items.forEach(function (i) { %>
+            <a href="<%= i.href %>" data-nav="<%= i.key %>" class="<%= i.key === def.nav ? 'active' : '' %>"<%- i.external ? ' target="_blank" rel="noopener"' : '' %>>
+              <%- icon(i.icon) %><span><%= i.label %></span><% if (i.badge) { %><span class="count" hidden></span><% } %>
+            </a>
+          <% }) %>
+        </div>
+      <% }) %>
+    </nav>
+    <div class="side-foot">
+      <span class="avatar" style="background:#7c1d2e"><%= user.name.slice(0, 1) %></span>
+      <div class="who"><b><%= user.name %></b><span><%= user.role %> · <%= user.username %></span></div>
+      <a class="icon-btn" href="/logout" title="로그아웃" style="margin-left:auto;background:transparent;border-color:#2b2f38;color:#c9cdd6"><%- icon('logout') %></a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menu-btn" aria-label="메뉴"><%- icon('menu') %></button>
+      <div class="crumbs"><span><%= def.section %></span><span>/</span><b><%= def.title %></b></div>
+      <div class="search">
+        <%- icon('search') %>
+        <input id="global-search" type="search" placeholder="구성원·Crew·업무·자원 검색  ( / )" autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+      <a class="icon-btn" href="/notifications" title="알림"><%- icon('bell') %><span class="dot" id="bell-dot" hidden></span></a>
+      <a class="icon-btn" href="/me" title="내 정보"><%- icon('user') %></a>
+    </header>
+
+    <main class="content">
+      <% if (error) { %>
+        <div class="error-page"><div>
+          <div class="code"><%= error.code %></div>
+          <h2 style="margin:6px 0 8px"><%= error.title %></h2>
+          <p class="muted" style="color:var(--muted)"><%= error.message %></p>
+          <a class="btn primary" href="/dashboard" style="margin-top:12px">대시보드로 이동</a>
+        </div></div>
+      <% } else { %>
+        <div id="view"></div>
+      <% } %>
+    </main>
+  </div>
+</div>
+<script id="app-data" type="application/json"><%- appDataJson %></script>
+<% if (def.chart && !error) { %><script src="/vendor/chart.umd.min.js"></script><% } %>
+<script src="/public/js/icons.js"></script>
+<script src="/public/js/core.js"></script>
+<% if (!error && def.page) { %><script src="/public/js/pages/<%= def.page %>.js"></script><% } %>
+</body>
+</html>

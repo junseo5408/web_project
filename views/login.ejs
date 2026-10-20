@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 · The Family</title>
+  <link rel="stylesheet" href="/public/css/app.css">
+</head>
+<body>
+<div class="auth">
+  <section class="auth-art">
+    <div class="brand" style="padding:0">
+      <div class="brand-mark">F</div>
+      <div class="brand-name">The Family<small>통합 운영 시스템</small></div>
+    </div>
+    <div>
+      <h1>흩어진 운영 정보를<br>하나의 시스템으로.</h1>
+      <p>구성원과 Crew, 업무 배정, 공용 자원, 평가와 활동 기록을 역할별 권한 아래에서 일관되게 관리합니다.</p>
+      <div class="feat">
+        <div><%- icon('shield') %><span>역할·관리 범위 기반 권한과 서버 측 업무 규칙 검사</span></div>
+        <div><%- icon('calendar') %><span>시간대 중복 없는 업무 배정과 자원 예약</span></div>
+        <div><%- icon('audit') %><span>모든 중요 변경과 관리 활동의 감사 기록</span></div>
+      </div>
+    </div>
+    <small style="color:#7d757a">© The Family · Internal use only</small>
+  </section>
+  <section class="auth-form">
+    <div class="box">
+      <h2>로그인</h2>
+      <p style="color:var(--muted);margin:0 0 22px">계정 정보로 로그인하세요.</p>
+      <% if (error) { %><div class="notice bad" style="margin-bottom:16px"><%- icon('alert') %><div><%= error %></div></div><% } %>
+      <form method="post" action="/login" autocomplete="on">
+        <input type="hidden" name="next" value="<%= next %>">
+        <div class="field"><label for="username">아이디</label><input class="input" id="username" name="username" value="<%= username %>" autocomplete="username" required autofocus></div>
+        <div class="field"><label for="password">비밀번호</label><input class="input" id="password" name="password" type="password" autocomplete="current-password" required></div>
+        <button class="btn primary" type="submit" style="margin-top:6px">로그인</button>
+      </form>
+      <% if (demoMode) { %>
+        <div class="demo-accounts">
+          <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">데모 계정 (비밀번호 <code>pass1234</code>) — 클릭하면 입력됩니다</div>
+          <div class="row">
+            <% ['boss','underboss1','capo1','capo2','soldier1','soldier2','associate1','admin'].forEach(function (u) { %>
+              <button type="button" data-user="<%= u %>"><%= u %></button>
+            <% }) %>
+          </div>
+        </div>
+        <script src="/public/js/login.js"></script>
+      <% } %>
+      <p style="margin-top:28px;font-size:12.5px;color:var(--muted)">API 문서: <a href="/api-docs">Swagger UI</a> · <a href="/catalog">요구사항 추적표</a></p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

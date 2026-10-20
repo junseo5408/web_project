@@ -1,0 +1,27 @@
+{
+  "name": "the-family-system",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "report": "node scripts/generate-report.js",
+    "verify": "node scripts/verify-report.js"
+  },
+  "description": "The Family 통합 정보시스템 (Node.js + Express + MySQL + MongoDB, 중간고사 2026)",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.5.1",
+    "compression": "^1.8.2",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^6.21.0",
+    "mysql2": "^3.24.6",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=16.20.1"
+  },
+  "private": true
+}
